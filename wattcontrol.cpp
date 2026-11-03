@@ -37,6 +37,21 @@ public:
   float getpotenciakw() const { return potenciakw; }
   bool estaencendida() const { return encendida; }
   void setencendida(bool estado) { encendida = estado; }
+  // Metodos de control de cargas y metodos de calculo copn acumuladores
+  void encender() {
+    encendida = true;
+    horasuso++;
+  }
+  void apagar() { encendida = false; }
+  float calcularconsumotohora() const {
+    if (encendida) {
+      return (potenciakw);
+    }
+    return 0;
+  }
+  float calcularCostoHora(float precio) const {
+    return calcularconsumotohora() * precio;
+  }
 };
 // aca se establece una nueva clase de carga para cosas que no se pueden apagar
 //  y que hereda de la clase padre todos sus metodos y argumentos de la clase
@@ -62,5 +77,25 @@ public:
       return false;
     }
     return true;
+  }
+};
+// Se crea la clase Medidor que usra Negocio y es la que suma de forma
+// acumulada el consumo de energia y su costo total
+class Medidor {
+private:
+  float consumototalkwh;
+  float costototalcop;
+
+public:
+  Medidor() : consumototalkwh(0), costototalcop(0) {}
+  void registarconsumo(float kw, float precio) {
+    consumototalkwh += kw;
+    costototalcop += (kw * precio);
+  }
+  float getconsumototalkwh() const { return consumototalkwh; }
+  float getcostototalcop() const { return costototalcop; }
+  void reiniciar() {
+    consumototalkwh = 0;
+    costototalcop = 0;
   }
 };
