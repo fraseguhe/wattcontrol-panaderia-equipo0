@@ -131,4 +131,4 @@ public:
     } else if (hora <= 20) {
       precioMinimo = 705; precioMaximo = 1612;
     } else {
-      precioMinimo = 565; precioMaximo = 970;
+      precioMinimo =
