@@ -26,6 +26,8 @@ const int PICO_FIN = 20;
 
 // OTRAS CONSTANTES
 const int FALLOS_CADA = 20;
+const int HORAS_MIN_HORNO = 6;
+const int HORAS_MIN_AMASADORA = 4;
 
 // Clases
 class Carga {
@@ -78,8 +80,15 @@ public:
 
 // Clase para cargas de las que se puede prescindir en horas pico o escasez
 class CargaPresindible : public Carga {
+private:
+  int horasMinimas;
+
 public:
-  CargaPresindible(string n, float p) : Carga(n, p) {}
+
+  CargaPresindible(string n, float p, int horasMin) : Carga(n, p) {
+    horasMinimas = horasMin;
+  }
+
   bool debeencender(int hora, float precio, float nivelembalse) override {
     bool eshorapico = (hora >= PICO_INICIO && hora <= PICO_FIN);
     bool energiacara = (precio > PRECIO_MAXIMO);
@@ -90,6 +99,8 @@ public:
     }
     return true;
   }
+
+  int getHorasMinimas() {return horasMinimas;}
 };
 
 // Clase Medidor que acumula el consumo de energia y su costo total
@@ -340,8 +351,8 @@ int main() {
     bool estadoSimulacion = false;
     Mercado mercado(nivelEmbalseInicial);
     CargaCritica nevera("Nevera de Insumos", POTENCIA_NEVERA);
-    CargaPresindible horno("Horno Electrico", POTENCIA_HORNO);
-    CargaPresindible amasadora("Amasadora", POTENCIA_AMASADORA);
+    CargaPresindible horno("Horno Electrico", POTENCIA_HORNO, HORAS_MIN_HORNO);
+    CargaPresindible amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA);
     Negocio panaderia("Panaderia 24/7", &mercado);
     panaderia.nuevaCarga(&nevera);
     panaderia.nuevaCarga(&horno);
