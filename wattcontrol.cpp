@@ -7,6 +7,7 @@ using namespace std;
 
 // Directivas
 #define HORAS_DIA 24
+#define MAX_CARGAS 3
 
 // CONSTANTES DE LA PANADERIA
 // KW maximos para la panaderia
@@ -147,4 +148,71 @@ public:
     }
 
     float getNivelEmbalses() {return nivelEmbalses;}
+};
+
+class Mercado {
+private:
+    float nivelEmbalses;
+
+public:
+
+    Mercado(float embalses) {
+        nivelEmbalses = embalses;
+    }
+
+
+    float precioPorHora(int hora) {
+        int precioMinimo;
+        int precioMaximo;
+
+        if (hora <= 6) {
+            precioMinimo = 398; precioMaximo = 640;
+        } else if (hora <= 14) {
+            precioMinimo = 456; precioMaximo = 970;
+        } else if (hora <= 17) {
+            precioMinimo = 596; precioMaximo = 1040;
+        } else if (hora <= 20) {
+            precioMinimo = 705; precioMaximo = 1612;
+        } else {
+            precioMinimo = 565; precioMaximo = 970;
+        }
+        return precioMinimo + rand() % (precioMaximo - precioMinimo + 1);
+    }
+
+    float getNivelEmbalses() {return nivelEmbalses;}
+};
+
+
+// Se define Negocio, clase que unifica las relaciones con Carga y Mercado, apartir
+// De esta clase se agregan nuevas cargas si hay espacio.
+
+class Negocio {
+private:
+
+    string nombreNegocio;
+    Medidor medidor;
+    Carga* cargas[MAX_CARGAS];
+    int contadorCargas;
+    Mercado* mercado;
+
+public:
+
+    Negocio(string nombre, Mercado* m) : medidor() {
+        nombreNegocio = nombre;
+        mercado = m;
+        contadorCargas = 0;
+    }
+
+    void nuevaCarga(Carga* c) {
+        if(contadorCargas < MAX_CARGAS) {
+            cargas[contadorCargas] = c;
+            contadorCargas++;
+            cout << "Nueva Carga Agregada!" << endl;
+        } else {
+            cout << "No hay capacidad para una nueva carga" << endl;
+        }
+    }
+
+
+
 };
