@@ -88,7 +88,7 @@ private:
 
 public:
   Medidor() : consumototalkwh(0), costototalcop(0) {}
-  void registarconsumo(float kw, float precio) {
+  void registrarconsumo(float kw, float precio) {
     consumototalkwh += kw;
     costototalcop += (kw * precio);
   }
@@ -99,3 +99,45 @@ public:
     costototalcop = 0;
   }
 };
+// MAIN DE PRUEBA
+int main() {
+  cout << "=== PRUEBAS DE UNIDAD: MODELO DE CARGAS Y MEDIDOR ===" << endl;
+
+  // Instancias para la Panadería
+  CargaCritica horno("Horno Principal", 8.0);              // 8 kW (No se apaga)
+  CargaPresindible amasadora("Amasadora Industrial", 4.5); // 4.5 kW (Aplazable)
+  Medidor medidor;
+
+  // PRUEBA 1 y 2: Hora pico y energía cara
+  int horaPrueba = 19;
+  float precioPrueba = 1200.0; // > PRECIO_MAXIMO (1154)
+  float embalsePrueba = 50.0;
+
+  cout << "\n[Prueba 1 y 2] Hora: " << horaPrueba << ":00 | Precio: $"
+       << precioPrueba << " | Embalse: " << embalsePrueba << "%" << endl;
+
+  cout << horno.getnombre() << " debe encender?: "
+       << (horno.debeencender(horaPrueba, precioPrueba, embalsePrueba) ? "SI"
+                                                                       : "NO")
+       << endl;
+  cout << amasadora.getnombre() << " debe encender?: "
+       << (amasadora.debeencender(horaPrueba, precioPrueba, embalsePrueba)
+               ? "SI"
+               : "NO")
+       << endl;
+
+  // PRUEBA 3: Escasez de agua (Embalse < 40%)
+  embalsePrueba = 35.0;
+  cout << "\n[Prueba 3] Embalse al " << embalsePrueba << "% (Bajo critico)"
+       << endl;
+  cout << amasadora.getnombre() << " debe encender?: "
+       << (amasadora.debeencender(10, 800.0, embalsePrueba) ? "SI" : "NO")
+       << endl;
+
+  // Prueba de acumulación en Medidor
+  medidor.registrarconsumo(horno.getpotenciakw(), 900.0);
+  cout << "\n[Medidor] Consumo acumulado: " << medidor.getconsumototalkwh()
+       << " kWh | Costo: $" << medidor.getcostototalcop() << " COP" << endl;
+
+  return 0;
+}
