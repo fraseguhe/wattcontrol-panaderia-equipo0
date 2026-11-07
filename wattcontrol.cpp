@@ -4,13 +4,26 @@
 #include <string>
 using namespace std;
 
+
+// Directivas
+#define HORAS_DIA 24
+
 // CONSTANTES DE LA PANADERIA
 // KW maximos para la panaderia
 const float POTENCIA_CONTRATADA = 15;
 // PRECIO MAXIMO POR KW
-const float PRECIO_MAXIMO = 1154;
+const float PRECIO_MAXIMO = 800;
 // CAPACIDAD MINIMA DE EMBALSE
 const float EMBALSE_MINIMO = 40;
+// POTENCIA DE CADA CARGA EN EL NEGOCIO
+const float POTENCIA_NEVERA = 1.2;
+const float POTENCIA_HORNO = 7.0;
+const float POTENCIA_AMASADORA = 2.2;
+// POTENCIA CONTRATADA
+const float POTENCIA_CONTRATADA = 9.0;
+// HORAS PICO
+const int PICO_INICIO = 18;
+const int PICO_FIN = 20;
 
 // Clases
 class Carga {
