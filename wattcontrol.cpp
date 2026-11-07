@@ -8,6 +8,7 @@ using namespace std;
 // Directivas
 #define HORAS_DIA 24
 #define MAX_CARGAS 3
+#define SEMILLA 2026
 
 // CONSTANTES DE LA PANADERIA
 const float POTENCIA_CONTRATADA = 15.0; // KW maximos para la panaderia
@@ -59,6 +60,11 @@ public:
     horasuso++;
   }
   void apagar() { encendida = false; }
+
+  void reiniciar() {
+    horasuso = 0;
+  }
+
   float calcularconsumotohora() const {
     if (encendida) {
       return (potenciakw);
@@ -245,9 +251,17 @@ public:
     }
   }
 
-  void simularDia()
-  {
+  void simularDia() {
+    // Cada vez que se usa la opcion 3 se reinician los valores para que se vuelvan a elegir
+    // valores aleatorios, para esto usamos los metodos reiniciar tanto de carga como de medidor
     costoSinGestor = 0;
+    produccionIncompleta = false;
+    medidor.reiniciar();
+
+    for(int i = 0; i < contadorCargas; i++) {
+      cargas[i]->reiniciar();
+    }
+
     float nivelEmbalses = mercado->getNivelEmbalses();
     float potenciaTotal = 0;
 
@@ -396,6 +410,7 @@ public:
 };
 
 int main() {
+  srand(SEMILLA);
   int horaInicial = 10;
   int opcionElegida;
   float precioInicial = 450;
