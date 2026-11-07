@@ -1,5 +1,5 @@
 // Importe de librerias
-#include <cmath>
+#include <iomanip>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -176,6 +176,55 @@ public:
             cout << "No hay capacidad para una nueva carga" << endl;
         }
     }
+
+    // El metodo evaluar decision recibe hora, precio y nivelEmbalse, con esto cada carga determina si debe encenderse o apagarse
+    
+
+    void evaluarDecision(int hora, float precio, float nivelEmbalse) {
+        float potenciaEnUso = 0;
+        bool estadoCargas[MAX_CARGAS];
+
+        // Recorremos todas las cargas y revisamos con el metodo debeencender si dadas las condiciones ingresadas se prenden o apagan 
+        for (int i = 0; i < contadorCargas; i++) {
+            estadoCargas[i] = cargas[i]->debeencender(hora, precio, nivelEmbalse);
+
+            // Vamos sumando la potencia utilizada en los casos en los que las cargas estan encendidas
+            if (estadoCargas[i]) {
+                potenciaEnUso += cargas[i]->getpotenciakw();
+            }
+        }
+
+        // Se define la regla 6 si la potencia que esta siendo utilizada es mayor a la contratada, se apaga la carga aplazable de mayor potencia
+        if(potenciaEnUso > POTENCIA_CONTRATADA) {
+            int cargaMayor = -1;
+
+            // Aqui recorremos nuevamente las cargas y usamos casting para determinar si la carga que esta siendo analizada es del tipo aplazable
+            // En el caso de que lo sea se determina su potencia para luego compararla con la carga restante y decidir cual de las dos tiene mayor
+            // Potencia
+            for (int i = 0; i < contadorCargas; i++) {
+                if(estadoCargas[i] && dynamic_cast<CargaPresindible*>(cargas[i]) != nullptr) {
+                    if(cargaMayor == -1 || cargas[i]->getpotenciakw() > cargas[cargaMayor]->getpotenciakw()) {
+                        cargaMayor = i;
+                    }
+                }
+            }
+
+            // Cuando se determino que la potencia esta excediendo el limite, se usa el valor de cargaMayor para apagar la carga aplazable de mayor potencia
+            // Tambien damos una advertencia
+            if(cargaMayor != -1) {
+                estadoCargas[cargaMayor] = false;
+                cout << "ALTO! La potencia en uso *** " << potenciaEnUso << " kW *** es mayor a la contratada "
+                << POTENCIA_CONTRATADA << "kW " << endl;
+            }
+        }
+
+        // Finalmente se recorren las cargas y dependiendo de si estas deben encenderse o apagarse se devuelve el mensaje en pantalla
+        for (int i = 0; i < contadorCargas; i++) {
+             cout << "  " << setw(20) << left << cargas[i]->getnombre() << right
+             << (estadoCargas[i] ? " ENCENDER" : " APAGAR") << endl;
+        }
+    }
+
 
 };
 
