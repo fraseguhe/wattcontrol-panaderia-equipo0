@@ -371,6 +371,30 @@ public:
       cout << "ATENCION --- PRODUCCION INCOMPLETA / HORAS MIN NO ALCANZADAS" << endl;
     }
   }
+
+  void resumen() {
+    
+    // Recorremos las cargas observamos las horas de uso despues de la simulacion ademas del costo 
+    for (int i = 0; i < contadorCargas; i++) {
+      cout << setw(20) << left << cargas[i]->getnombre() << right << cargas[i]->getHorasUso() << " horas, "
+           << cargas[i]->getHorasUso() * cargas[i]->getpotenciakw() << " kWh" << endl;
+    }
+
+    cout << fixed << setprecision(0);
+    cout << "Costo usando el gestor: " << medidor.getcostototalcop() << "COP" << endl;
+    cout << "Costo sin usar el gestor: " << costoSinGestor << " COP" << endl;
+
+    float ahorroTotal = costoSinGestor - medidor.getcostototalcop();
+    cout << "Ahorro: " << ahorroTotal << " COP";
+
+    if (costoSinGestor > 0) {
+      cout << " |" << setprecision(1) << ahorroTotal / costoSinGestor * 100 << " %|" << endl;
+    }
+
+    if (produccionIncompleta) {
+      cout << "ATENCION: LA PRODUCCION ESTA INCOMPLETA | HORAS MIN NO ALCANZADAS" << endl;
+    }
+  }
 };
 
 int main() {
