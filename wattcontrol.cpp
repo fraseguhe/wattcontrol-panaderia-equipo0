@@ -145,3 +145,38 @@ public:
 
     float getNivelEmbalses() {return nivelEmbalses;}
 };
+
+
+// Clase Negocio: Es la clase central que relaciona el resto de clases, a traves de esta clase se definen los metodos que usara el menu para
+// simular y verificar el costo de la energia.
+class Negocio {
+private:
+
+    string nombreNegocio;
+    Medidor medidor;
+    Carga* cargas[MAX_CARGAS];
+    int contadorCargas;
+    Mercado* mercado;
+
+public:
+
+    Negocio(string nombre, Mercado* m) : medidor() {
+        nombreNegocio = nombre;
+        mercado = m;
+        contadorCargas = 0;
+    }
+
+  // Este metodo determina si es posible agregar una nueva carga al negocio, teniendo en cuenta que el maximo posible es de 3
+    void nuevaCarga(Carga* c) {
+        if(contadorCargas < MAX_CARGAS) {
+            cargas[contadorCargas] = c;
+            contadorCargas++;
+            cout << "Nueva Carga Agregada!" << endl;
+        } else {
+            cout << "No hay capacidad para una nueva carga" << endl;
+        }
+    }
+
+
+
+};
