@@ -177,6 +177,20 @@ public:
         }
     }
 
+};
 
 
+int main() {
+    int horaInicial = 10;
+    float precioInicial = 450;
+    float nivelEmbalseInicial = 70;
+    bool estadoSimulacion = false;
+    Mercado mercado(nivelEmbalseInicial);
+    CargaCritica nevera("Nevera de Insumos", POTENCIA_NEVERA);
+    CargaPresindible horno("Horno Electrico", POTENCIA_HORNO);
+    CargaPresindible amasadora("Amasadora", POTENCIA_AMASADORA);
+    Negocio panaderia("Panaderia 24/7", &mercado);
+    panaderia.nuevaCarga(&nevera);
+    panaderia.nuevaCarga(&horno);
+    panaderia.nuevaCarga(&amasadora);
 };
