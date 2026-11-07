@@ -10,8 +10,6 @@ using namespace std;
 #define MAX_CARGAS 3
 
 // CONSTANTES DE LA PANADERIA
-// KW maximos para la panaderia
-const float POTENCIA_CONTRATADA = 15;
 // PRECIO MAXIMO POR KW
 const float PRECIO_MAXIMO = 800;
 // CAPACIDAD MINIMA DE EMBALSE
