@@ -134,32 +134,30 @@ public:
     nivelEmbalses = embalses;
   }
 
-  public:
+  float precioPorHora(int hora) {
+    int precioMinimo;
+    int precioMaximo;
 
-    Mercado(float embalses) {
-        nivelEmbalses = embalses;
+    if (hora <= 6) {
+      precioMinimo = 398;
+      precioMaximo = 640;
+    } else if (hora <= 14) {
+      precioMinimo = 456;
+      precioMaximo = 970;
+    } else if (hora <= 17) {
+      precioMinimo = 596;
+      precioMaximo = 1040;
+    } else if (hora <= 20) {
+      precioMinimo = 705;
+      precioMaximo = 1612;
+    } else {
+      precioMinimo = 565;
+      precioMaximo = 970;
     }
+    return precioMinimo + rand() % (precioMaximo - precioMinimo + 1);
+  }
 
-
-    float precioPorHora(int hora) {
-        int precioMinimo;
-        int precioMaximo;
-
-        if (hora <= 6) {
-            precioMinimo = 398; precioMaximo = 640;
-        } else if (hora <= 14) {
-            precioMinimo = 456; precioMaximo = 970;
-        } else if (hora <= 17) {
-            precioMinimo = 596; precioMaximo = 1040;
-        } else if (hora <= 20) {
-            precioMinimo = 705; precioMaximo = 1612;
-        } else {
-            precioMinimo = 565; precioMaximo = 970;
-        }
-        return precioMinimo + rand() % (precioMaximo - precioMinimo + 1);
-    }
-
-    float getNivelEmbalses() {return nivelEmbalses;}
+  float getNivelEmbalses() { return nivelEmbalses; }
 };
 
 
@@ -206,7 +204,7 @@ public:
 
     // Recorremos todas las cargas y revisamos con el metodo debeencender si dadas las condiciones ingresadas se prenden o apagan 
     for (int i = 0; i < contadorCargas; i++) {
-    estadoCargas[i] = cargas[i]->debeencender(hora, precio, nivelEmbalse);
+      estadoCargas[i] = cargas[i]->debeencender(hora, precio, nivelEmbalse);
 
     // Vamos sumando la potencia utilizada en los casos en los que las cargas estan encendidas
     if (estadoCargas[i]) {
@@ -399,6 +397,7 @@ public:
 
 int main() {
     int horaInicial = 10;
+    int opcionElegida;
     float precioInicial = 450;
     float nivelEmbalseInicial = 70;
     bool estadoSimulacion = false;
@@ -410,4 +409,74 @@ int main() {
     panaderia.nuevaCarga(&nevera);
     panaderia.nuevaCarga(&horno);
     panaderia.nuevaCarga(&amasadora);
+
+    do {
+      cout << endl
+           << "===== WattControl =====" << endl;
+      cout << "1. Ingresar lectura manual (hora, precio, nivelEnvalse)" << endl;
+      cout << "2. Evaluar decision de cada carga" << endl;
+      cout << "3. Simular un dia completo (24 h)" << endl;
+      cout << "4. Resumen de la ultima simulacion" << endl;
+      cout << "5. Salir del programa" << endl;
+      cout << "Elige una opcion: ";
+      cin >> opcionElegida;
+
+      switch (opcionElegida) {
+      case 1:
+        do {
+          cout << "Hora: ";
+          cin >> horaInicial;
+          if (horaInicial < 0 || horaInicial > 23) {
+            cout << " Hora invalidad, intenta nuevamente (Entero entre 0 y 23)" << endl;
+          }
+        } while (horaInicial < 0 || horaInicial > 23);
+
+        do {
+          cout << "Precio en bolsa: ";
+          cin >> precioInicial;
+
+          if (precioInicial <= 0) {
+            cout << " Error invalido, el precio debe ser mayor a 0" << endl;
+          }
+        } while (precioInicial <= 0);
+
+        do {
+          cout << "Cual es el nivel de los envalses: ";
+          cin >> nivelEmbalseInicial;
+
+          if (nivelEmbalseInicial < 0 || nivelEmbalseInicial > 100) {
+            cout << " Los valores de los embalses deben estar entre 0 y 100" << endl;
+          }
+        } while (nivelEmbalseInicial < 0 || nivelEmbalseInicial > 100);
+
+        cout << "Ingreso de datos exitoso!" << endl;
+        break;
+
+      case 2:
+        cout << "Desicion con los datos iniciales" << endl;
+        panaderia.evaluarDecision(horaInicial, precioInicial, nivelEmbalseInicial);
+        break;
+
+      case 3:
+        panaderia.simularDia();
+        estadoSimulacion = true;
+        break;
+
+      case 4:
+        if (estadoSimulacion) {
+          panaderia.resumen();
+        }
+        else {
+          cout << "Inicialice una simulacion con la opcion 3 antes de usar esta opcion." << endl;
+        }
+        break;
+
+      case 5:
+        cout << "Apagando equipos... Adios!" << endl;
+        break;
+
+      default:
+        cout << "Opcion elegida no valida, intenta nuevamente" << endl;
+      }
+    } while (opcionElegida != 5);
 };
