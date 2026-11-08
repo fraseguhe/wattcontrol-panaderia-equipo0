@@ -140,6 +140,10 @@ public:
     nivelEmbalses = embalses;
   }
 
+  void setNivelEmbalses(float nuevoNivel) {
+    nivelEmbalses = nuevoNivel;
+  }
+
   float precioPorHora(int hora) {
     int precioMinimo;
     int precioMaximo;
@@ -165,8 +169,6 @@ public:
 
   float getNivelEmbalses() { return nivelEmbalses; }
 };
-
-
 // Clase Negocio: Es la clase central que relaciona el resto de clases, a traves de esta clase se definen los metodos que usara el menu para
 // simular y verificar el costo de la energia.
 class Negocio {
@@ -462,6 +464,8 @@ int main() {
           cout << " Los valores de los embalses deben estar entre 0 y 100" << endl;
         }
       } while (nivelEmbalseInicial < 0 || nivelEmbalseInicial > 100);
+
+      mercado.setNivelEmbalses(nivelEmbalseInicial);
 
       cout << "Ingreso de datos exitoso!" << endl;
       break;
