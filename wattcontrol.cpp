@@ -48,7 +48,7 @@ public:
   // Destructor virtual para liberar memoria en subclases
   virtual ~Carga() {}
 
-  virtual bool debeencender(int hora, float preccio, float nivelembalse) = 0;
+  virtual bool debeencender(int hora, float precio, float nivelembalse) = 0;
   string getnombre() const { return nombre; }
   float getpotenciakw() const { return potenciakw; }
   int getHorasUso() { return horasuso;}
@@ -427,7 +427,7 @@ int main() {
 
   do {
     cout << endl << "===== WattControl =====" << endl;
-    cout << "1. Ingresar lectura manual (hora, precio, nivelEnvalse)" << endl;
+    cout << "1. Ingresar lectura manual (hora, precio, nivelEmbalse)" << endl;
     cout << "2. Evaluar decision de cada carga" << endl;
     cout << "3. Simular un dia completo (24 h)" << endl;
     cout << "4. Resumen de la ultima simulacion" << endl;
@@ -450,12 +450,12 @@ int main() {
         cin >> precioInicial;
 
         if (precioInicial <= 0) {
-          cout << " Error invalido, el precio debe ser mayor a 0" << endl;
+          cout << " Error, valor invalido, el precio debe ser mayor a 0" << endl;
         }
       } while (precioInicial <= 0);
 
       do {
-        cout << "Cual es el nivel de los envalses: ";
+        cout << "Cual es el nivel de los Embalses: ";
         cin >> nivelEmbalseInicial;
 
         if (nivelEmbalseInicial < 0 || nivelEmbalseInicial > 100) {
