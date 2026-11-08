@@ -29,6 +29,9 @@ const int PICO_FIN = 20;
 const int FALLOS_CADA = 20;
 const int HORAS_MIN_HORNO = 6;
 const int HORAS_MIN_AMASADORA = 4;
+const int HORA_INICIAL = 10;
+const float PRECIO_INICIAL = 450;
+const float EMBALSE_INICIAL = 70;
 
 // Clases
 class Carga {
@@ -420,12 +423,12 @@ public:
 
 int main() {
   srand(SEMILLA);
-  int horaInicial = 10;
+  int hora = HORA_INICIAL;
   int opcionElegida;
-  float precioInicial = 450;
-  float nivelEmbalseInicial = 70;
+  float precio = PRECIO_INICIAL;
+  float nivelEmbalse = EMBALSE_INICIAL;
   bool estadoSimulacion = false;
-  Mercado mercado(nivelEmbalseInicial);
+  Mercado mercado(nivelEmbalse);
   CargaCritica nevera("Nevera de Insumos", POTENCIA_NEVERA);
   CargaAplazable horno("Horno Electrico", POTENCIA_HORNO, HORAS_MIN_HORNO);
   CargaAplazable amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA);
@@ -448,38 +451,38 @@ int main() {
     case 1:
       do {
         cout << "Hora: ";
-        cin >> horaInicial;
-        if (horaInicial < 0 || horaInicial > 23) {
+        cin >> hora;
+        if (hora < 0 || hora > 23) {
           cout << " Hora invalidad, intenta nuevamente (Entero entre 0 y 23)" << endl;
         }
-      } while (horaInicial < 0 || horaInicial > 23);
+      } while (hora < 0 || hora > 23);
 
       do {
         cout << "Precio en bolsa: ";
-        cin >> precioInicial;
+        cin >> precio;
 
-        if (precioInicial <= 0) {
+        if (precio <= 0) {
           cout << " Error, valor invalido, el precio debe ser mayor a 0" << endl;
         }
-      } while (precioInicial <= 0);
+      } while (precio <= 0);
 
       do {
         cout << "Cual es el nivel de los Embalses: ";
-        cin >> nivelEmbalseInicial;
+        cin >> nivelEmbalse;
 
-        if (nivelEmbalseInicial < 0 || nivelEmbalseInicial > 100) {
+        if (nivelEmbalse < 0 || nivelEmbalse > 100) {
           cout << " Los valores de los embalses deben estar entre 0 y 100" << endl;
         }
-      } while (nivelEmbalseInicial < 0 || nivelEmbalseInicial > 100);
+      } while (nivelEmbalse < 0 || nivelEmbalse > 100);
 
-      mercado.setNivelEmbalses(nivelEmbalseInicial);
+      mercado.setNivelEmbalses(nivelEmbalse);
 
       cout << "Ingreso de datos exitoso!" << endl;
       break;
 
     case 2:
       cout << "Desicion con los datos iniciales" << endl;
-      panaderia.evaluarDecision(horaInicial, precioInicial, nivelEmbalseInicial);
+      panaderia.evaluarDecision(hora, precio, nivelEmbalse);
       break;
 
     case 3:
