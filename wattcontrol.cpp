@@ -374,7 +374,7 @@ public:
     for (int i = 0; i < contadorCargas; i++){
       CargaAplazable* CargaAplazable = dynamic_cast<CargaAplazable*>(cargas[i]);
 
-      if(cargaPrescindible != nullptr && cargaPrescindible->getHorasUso() < cargaPrescindible->getHorasMinimas()) {
+      if(CargaAplazable != nullptr && CargaAplazable->getHorasUso() < CargaAplazable->getHorasMinimas()) {
         produccionIncompleta = true;
       }  
     }
