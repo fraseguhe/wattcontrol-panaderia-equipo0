@@ -101,10 +101,7 @@ public:
     bool energiacara = (precio > PRECIO_MAXIMO);
     bool escasezagua = (nivelembalse < EMBALSE_MINIMO);
 
-    if ((eshorapico && energiacara) || escasezagua) {
-      return false;
-    }
-    return true;
+    return !(eshorapico || energiacara || escasezagua);
   }
 
   int getHorasMinimas() {return horasMinimas;}
@@ -207,6 +204,11 @@ public:
     
 
   void evaluarDecision(int hora, float precio, float nivelEmbalse) {
+
+    if(nivelEmbalse < EMBALSE_MINIMO) {
+      cout << "--- ALERTA RIESGO DE RACIONAMIENTO --- Los embalses estan por debajo de 40%, solo funciona la carga critica!" << endl; 
+    }
+
     float potenciaEnUso = 0;
     bool estadoCargas[MAX_CARGAS];
 
@@ -265,6 +267,11 @@ public:
     }
 
     float nivelEmbalses = mercado->getNivelEmbalses();
+
+    if(nivelEmbalses < EMBALSE_MINIMO) {
+      cout << "--- ALERTA RIESGO DE RACIONAMIENTO --- Los embalses estan por debajo de 40%, solo funciona la carga critica!" << endl; 
+    }
+
     float potenciaTotal = 0;
 
     // Primero determinamos la potencia total usada por todas las cargas
@@ -433,7 +440,7 @@ int main() {
     cout << "2. Evaluar decision de cada carga" << endl;
     cout << "3. Simular un dia completo (24 h)" << endl;
     cout << "4. Resumen de la ultima simulacion" << endl;
-    cout << "5. Salir del programa" << endl;
+    cout << "0. Salir del programa" << endl;
     cout << "Elige una opcion: ";
     cin >> opcionElegida;
 
@@ -489,12 +496,12 @@ int main() {
       }
       break;
 
-    case 5:
+    case 0:
       cout << "Apagando equipos... Adios!" << endl;
       break;
 
     default:
       cout << "Opcion elegida no valida, intenta nuevamente" << endl;
     }
-  } while (opcionElegida != 5);
+  } while (opcionElegida != 0);
 };
