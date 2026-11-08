@@ -86,13 +86,13 @@ public:
 };
 
 // Clase para cargas de las que se puede prescindir en horas pico o escasez
-class CargaPresindible : public Carga {
+class CargaAplazable : public Carga {
 private:
   int horasMinimas;
 
 public:
 
-  CargaPresindible(string n, float p, int horasMin) : Carga(n, p) {
+  CargaAplazable(string n, float p, int horasMin) : Carga(n, p) {
     horasMinimas = horasMin;
   }
 
@@ -226,7 +226,7 @@ public:
     // En el caso de que lo sea se determina su potencia para luego compararla con la carga restante y decidir cual de las dos tiene mayor
     // Potencia
     for (int i = 0; i < contadorCargas; i++) {
-      if(estadoCargas[i] && dynamic_cast<CargaPresindible*>(cargas[i]) != nullptr) {
+      if(estadoCargas[i] && dynamic_cast<CargaAplazable*>(cargas[i]) != nullptr) {
         if(cargaMayor == -1 || cargas[i]->getpotenciakw() > cargas[cargaMayor]->getpotenciakw()) {
           cargaMayor = i;
         }
@@ -294,7 +294,7 @@ public:
         // Aqui el casting lo que hace es determinar si el objeto es de tipo cargaCritica, en ese caso lo enciende.
         for (int i = 0; i < contadorCargas; i++)
         {
-          if (dynamic_cast<CargaPresindible *>(cargas[i]) == nullptr)
+          if (dynamic_cast<CargaAplazable *>(cargas[i]) == nullptr)
           {
             cargas[i]->encender();
             potenciaCargaCritica += cargas[i]->getpotenciakw();
@@ -333,7 +333,7 @@ public:
         int cargaMayor = -1;
         for (int i = 0; i < contadorCargas; i++)
         {
-          if (estadoCargas[i] && dynamic_cast<CargaPresindible *>(cargas[i]) != nullptr)
+          if (estadoCargas[i] && dynamic_cast<CargaAplazable *>(cargas[i]) != nullptr)
           {
             if (cargaMayor == -1 || cargas[i]->getpotenciakw() > cargas[cargaMayor]->getpotenciakw())
             {
@@ -372,7 +372,7 @@ public:
 
     // Despues de recorrer todo el dia revisamos si se lograron las horas minimas de las cargas prescindibles
     for (int i = 0; i < contadorCargas; i++){
-      CargaPresindible* cargaPrescindible = dynamic_cast<CargaPresindible*>(cargas[i]);
+      CargaAplazable* CargaAplazable = dynamic_cast<CargaAplazable*>(cargas[i]);
 
       if(cargaPrescindible != nullptr && cargaPrescindible->getHorasUso() < cargaPrescindible->getHorasMinimas()) {
         produccionIncompleta = true;
@@ -418,8 +418,8 @@ int main() {
   bool estadoSimulacion = false;
   Mercado mercado(nivelEmbalseInicial);
   CargaCritica nevera("Nevera de Insumos", POTENCIA_NEVERA);
-  CargaPresindible horno("Horno Electrico", POTENCIA_HORNO, HORAS_MIN_HORNO);
-  CargaPresindible amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA);
+  CargaAplazable horno("Horno Electrico", POTENCIA_HORNO, HORAS_MIN_HORNO);
+  CargaAplazable amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA);
   Negocio panaderia("Panaderia 24/7", &mercado);
   panaderia.nuevaCarga(&nevera);
   panaderia.nuevaCarga(&horno);
