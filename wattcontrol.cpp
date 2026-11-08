@@ -372,9 +372,9 @@ public:
 
     // Despues de recorrer todo el dia revisamos si se lograron las horas minimas de las cargas prescindibles
     for (int i = 0; i < contadorCargas; i++){
-      CargaAplazable* CargaAplazable = dynamic_cast<CargaAplazable*>(cargas[i]);
+      CargaAplazable* cargaAplazable = dynamic_cast<CargaAplazable*>(cargas[i]);
 
-      if(CargaAplazable != nullptr && CargaAplazable->getHorasUso() < CargaAplazable->getHorasMinimas()) {
+      if(cargaAplazable != nullptr && cargaAplazable->getHorasUso() < cargaAplazable->getHorasMinimas()) {
         produccionIncompleta = true;
       }  
     }
