@@ -1,6 +1,7 @@
 #ifndef CARGA_H
 #define CARGA_H
 #include "Constantes.h"
+
 class Carga {
 protected:
   string nombre;
@@ -21,7 +22,7 @@ public:
   virtual bool debeencender(int hora, float precio, float nivelembalse) = 0;
   string getnombre() const { return nombre; }
   float getpotenciakw() const { return potenciakw; }
-  int getHorasUso() { return horasuso;}
+  int getHorasUso() const { return horasuso; }
   bool estaencendida() const { return encendida; }
   void setencendida(bool estado) { encendida = estado; }
 
@@ -41,8 +42,17 @@ public:
     }
     return 0;
   }
+
   float calcularCostoHora(float precio) const {
     return calcularconsumotohora() * precio;
+  }
+
+  // Sobrecarga: costo en COP para una cantidad de horas dada
+  float calcularCostoHora(float precio, int horas) const {
+    if (horas <= 0) {
+      return 0.0f;
+    }
+    return potenciakw * precio * horas;
   }
 };
 #endif

@@ -1,6 +1,7 @@
 #ifndef MERCADO_H
 #define MERCADO_H
 #include "Constantes.h"
+
 // Clase Mercado: determina el precio de la energia segun la hora y nivel de embalses
 class Mercado {
 private:
@@ -38,6 +39,6 @@ public:
     return precioMinimo + rand() % (precioMaximo - precioMinimo + 1);
   }
 
-  float getNivelEmbalses() { return nivelEmbalses; }
+  float getNivelEmbalses() const { return nivelEmbalses; }
 };
 #endif

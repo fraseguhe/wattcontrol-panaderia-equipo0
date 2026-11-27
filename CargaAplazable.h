@@ -2,13 +2,13 @@
 #define CARGAAPLAZABLE_H
 #include "Carga.h"
 #include "Constantes.h"
+
 // Clase para cargas de las que se puede prescindir en horas pico o escasez
 class CargaAplazable : public Carga {
 private:
   int horasMinimas;
 
 public:
-
   CargaAplazable(string n, float p, int horasMin) : Carga(n, p) {
     horasMinimas = horasMin;
   }
@@ -21,6 +21,6 @@ public:
     return !(eshorapico || energiacara || escasezagua);
   }
 
-  int getHorasMinimas() {return horasMinimas;}
+  int getHorasMinimas() const { return horasMinimas; }
 };
 #endif
