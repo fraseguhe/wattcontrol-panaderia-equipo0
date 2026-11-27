@@ -49,10 +49,10 @@ public:
 
   // Sobrecarga: costo en COP para una cantidad de horas dada
   float calcularCostoHora(float precio, int horas) const {
-    if (horas <= 0) {
-      return 0.0f;
-    }
+    if (horas > 0) {
     return potenciakw * precio * horas;
+}
+    return 0.0f;
   }
 };
 #endif

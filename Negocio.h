@@ -51,59 +51,52 @@ public:
 
   // Sobrecarga: promedio de consumo (kWh) si porConsumo es true, o de costo (COP) si es false
   float calcularPromedio(int periodos, bool porConsumo) const {
-    if (periodos <= 0) {
-      return 0.0f;
-    }
-    if (porConsumo) {
-      return medidor.getconsumototalkwh() / periodos;
-    }
-    return medidor.calcularPromedio(periodos);
+  if (periodos <= 0) {
+    return 0.0f;
   }
-
+  if (porConsumo) {
+    return medidor.getconsumototalkwh() / periodos;
+  }
+  return medidor.calcularPromedio(periodos);
+}
   // Retorna el indice (0..6) del dia con mayor costo en COP
   int diaMasCaro() const {
     int indiceMayor = 0;
     for (int d = 1; d < DIAS_SEMANA; d++) {
       if (costoDiario[d] > costoDiario[indiceMayor]) {
-        indiceMayor = d;
-      }
+      indiceMayor = d;
     }
-    return indiceMayor;
   }
-
+  return indiceMayor;
+}
   // Obtiene el dia (0..6), la hora (0..23) y el costo en COP de la hora mas cara
   void horaMasCara(int& diaResultado, int& horaResultado, float& costoHoraResultado) const {
     diaResultado = 0;
     horaResultado = 0;
     costoHoraResultado = costoPorDiaHora[0][0];
-
-    for (int d = 0; d < DIAS_SEMANA; d++) {
-      for (int h = 0; h < HORAS_DIA; h++) {
-        if (costoPorDiaHora[d][h] > costoHoraResultado) {
-          costoHoraResultado = costoPorDiaHora[d][h];
-          diaResultado = d;
-          horaResultado = h;
-        }
+  for (int d = 0; d < DIAS_SEMANA; d++) {
+    for (int h = 0; h < HORAS_DIA; h++) {
+      if (costoPorDiaHora[d][h] > costoHoraResultado) {
+        costoHoraResultado = costoPorDiaHora[d][h];
+        diaResultado = d;
+        horaResultado = h;
       }
     }
   }
-
+}
   // El metodo evaluar decision recibe hora, precio y nivelEmbalse, con esto cada carga determina si debe encenderse o apagarse
   void evaluarDecision(int hora, float precio, float nivelEmbalse) {
     if (nivelEmbalse < EMBALSE_MINIMO) {
       cout << "--- ALERTA RIESGO DE RACIONAMIENTO --- Los embalses estan por debajo de 40%, solo funciona la carga critica!" << endl;
     }
-
     float potenciaEnUso = 0;
     bool estadoCargas[MAX_CARGAS];
-
     for (int i = 0; i < contadorCargas; i++) {
       estadoCargas[i] = cargas[i]->debeencender(hora, precio, nivelEmbalse);
       if (estadoCargas[i]) {
         potenciaEnUso += cargas[i]->getpotenciakw();
       }
     }
-
     if (potenciaEnUso > POTENCIA_CONTRATADA) {
       int cargaMayor = -1;
       for (int i = 0; i < contadorCargas; i++) {
@@ -113,54 +106,42 @@ public:
           }
         }
       }
-
       if (cargaMayor != -1) {
         estadoCargas[cargaMayor] = false;
         cout << "ALTO! La potencia en uso *** " << potenciaEnUso << " kW *** es mayor a la contratada "
              << POTENCIA_CONTRATADA << "kW " << endl;
       }
     }
-
     for (int i = 0; i < contadorCargas; i++) {
       cout << "  " << setw(20) << left << cargas[i]->getnombre() << right
            << (estadoCargas[i] ? " ENCENDER" : " APAGAR") << endl;
     }
   }
-
   void simularDia() {
     costoSinGestor = 0;
     produccionIncompleta = false;
     tieneDatosSemanales = false;
     medidor.reiniciar();
-
     for (int i = 0; i < contadorCargas; i++) {
       cargas[i]->reiniciar();
     }
-
     float nivelEmbalses = mercado->getNivelEmbalses();
-
     if (nivelEmbalses < EMBALSE_MINIMO) {
       cout << "--- ALERTA RIESGO DE RACIONAMIENTO --- Los embalses estan por debajo de 40%, solo funciona la carga critica!" << endl;
     }
-
     float potenciaTotal = 0;
     for (int i = 0; i < contadorCargas; i++) {
       potenciaTotal += cargas[i]->getpotenciakw();
     }
-
     for (int hora = 0; hora < HORAS_DIA; hora++) {
       float precio = mercado->precioPorHora(hora);
-
       if (precio > PRECIO_ESCASEZ && nivelEmbalses < EMBALSE_MINIMO) {
         cout << "Hora " << hora << " | precio " << precio << " ALERTA RIESGO DE RACIONAMIENTO!" << endl;
         break;
       }
-
       costoSinGestor += potenciaTotal * precio;
-
       if (rand() % FALLOS_CADA == 0) {
         float potenciaCargaCritica = 0;
-
         for (int i = 0; i < contadorCargas; i++) {
           if (dynamic_cast<CargaAplazable*>(cargas[i]) == nullptr) {
             cargas[i]->encender();
@@ -169,22 +150,18 @@ public:
             cargas[i]->apagar();
           }
         }
-
         medidor.registrarconsumo(potenciaCargaCritica, precio);
         cout << "Fallo en Hora: " << hora << " | Falla en la lectura, solo funciona carga critica" << endl;
         continue;
       }
-
       bool estadoCargas[MAX_CARGAS];
       float potenciaEnUso = 0;
-
       for (int i = 0; i < contadorCargas; i++) {
         estadoCargas[i] = cargas[i]->debeencender(hora, precio, nivelEmbalses);
         if (estadoCargas[i]) {
           potenciaEnUso += cargas[i]->getpotenciakw();
         }
       }
-
       if (potenciaEnUso > POTENCIA_CONTRATADA) {
         int cargaMayor = -1;
         for (int i = 0; i < contadorCargas; i++) {
@@ -194,7 +171,6 @@ public:
             }
           }
         }
-
         if (cargaMayor != -1) {
           estadoCargas[cargaMayor] = false;
           cout << "ALTO! La potencia en uso *** " << potenciaEnUso << " kW *** es mayor a la contratada "
@@ -202,7 +178,6 @@ public:
           potenciaEnUso -= cargas[cargaMayor]->getpotenciakw();
         }
       }
-
       for (int i = 0; i < contadorCargas; i++) {
         if (estadoCargas[i]) {
           cargas[i]->encender();
@@ -281,7 +256,6 @@ public:
           costoPorDiaHora[d][hora] = costoHoraActual;
           continue;
         }
-
         bool estadoCargas[MAX_CARGAS];
         float potenciaEnUso = 0;
 
@@ -351,7 +325,6 @@ public:
     if (costoSinGestor > 0) {
       cout << " |" << setprecision(1) << ahorroTotal / costoSinGestor * 100 << " %|" << endl;
     }
-
     if (tieneDatosSemanales) {
       int idxDiaCaro = diaMasCaro();
       int diaPico = 0;
