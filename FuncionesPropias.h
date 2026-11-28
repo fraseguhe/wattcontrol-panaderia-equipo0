@@ -1,4 +1,4 @@
-#ifndef FUNCIONESPROPIAS.H
+#ifndef FUNCIONESPROPIAS_H
 #define FUNCIONESPROPIAS_H
 
 // Primera función de sobrecarga, recibe kW y precio y devuelve el precio de una hora

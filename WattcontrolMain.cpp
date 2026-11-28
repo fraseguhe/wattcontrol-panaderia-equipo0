@@ -15,7 +15,7 @@ int main() {
   CargaCritica nevera("Nevera de Insumos", POTENCIA_NEVERA);
   CargaAplazable horno("Horno Electrico", POTENCIA_HORNO, HORAS_MIN_HORNO);
   CargaAplazable amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA);
-  Negocio panaderia("Panaderia 24/7", &mercado);
+  Negocio panaderia(nombreNegocio, &mercado);
   panaderia.nuevaCarga(&nevera);
   panaderia.nuevaCarga(&horno);
   panaderia.nuevaCarga(&amasadora);
@@ -27,6 +27,7 @@ int main() {
     cout << "2. Evaluar decision de cada carga" << endl;
     cout << "3. Simular un dia completo (24 h)" << endl;
     cout << "4. Resumen de la ultima simulacion" << endl;
+    cout << "5. Simular la semana real" << endl;
     cout << "0. Salir del programa" << endl;
     cout << "Elige una opcion: ";
     cin >> opcionElegida;
@@ -81,6 +82,11 @@ int main() {
       else {
         cout << "Inicialice una simulacion con la opcion 3 antes de usar esta opcion." << endl;
       }
+      break;
+    
+    case 5:
+      panaderia.simularSemana();
+      estadoSimulacion = true;      
       break;
 
     case 0:

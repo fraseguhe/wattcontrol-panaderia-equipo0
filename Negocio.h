@@ -245,6 +245,11 @@ public:
       }
     }
 
+    // Cuando se llama a la simulación se reinician las horas diarias minimas
+    for (int i = 0; i < MAX_CARGAS; i++) {
+      diasHorasMinimas[i] = 0;
+    }
+
     float nivelEmbalses = mercado->getNivelEmbalses();
     if (nivelEmbalses < EMBALSE_MINIMO) {
       cout << "--- ALERTA RIESGO DE RACIONAMIENTO --- Los embalses estan por debajo de 40%, solo funciona la carga critica!" << endl;
@@ -391,6 +396,18 @@ public:
       cout << setprecision(0);
       cout << "Dia mas caro: " << NOMBRES_DIAS[idxDiaCaro] << " (" << costoDiario[idxDiaCaro] << " COP)" << endl;
       cout << "Hora mas cara: " << NOMBRES_DIAS[diaPico] << " hora " << horaPico << " (" << costoPicoHora << " COP)" << endl;
+      cout << "Costo por dia:" << endl;
+      for (int d = 0; d < DIAS_SEMANA; d++) {
+        cout << "  " << left << setw(6) << NOMBRES_DIAS[d] << right << setw(10) << costoDiario[d] << " COP" << endl;
+      }
+      cout << "Ahorro mensual (x 4): " << ahorroTotal * 4 << " COP" << endl;
+      cout << "Dias con las horas minimas cumplidas:" << endl;
+      for (int i = 0; i < contadorCargas; i++) {
+        CargaAplazable* cargaAplazable = dynamic_cast<CargaAplazable*>(cargas[i]);
+        if (cargaAplazable != nullptr) {
+          cout << "  " << cargaAplazable->getnombre() << ": " << diasHorasMinimas[i] << " de " << DIAS_SEMANA << " dias" << endl;
+        }
+      }
     }
 
     if (produccionIncompleta) {
