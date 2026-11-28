@@ -149,7 +149,7 @@ public:
     }
 
     for (int hora = 0; hora < HORAS_DIA; hora++) {
-      float precio = mercado->precioPorHora(hora);
+      float precio = mercado->precio(0, hora);
 
       if (precio > PRECIO_ESCASEZ && nivelEmbalses < EMBALSE_MINIMO) {
         cout << "Hora " << hora << " | precio " << precio << " ALERTA RIESGO DE RACIONAMIENTO!" << endl;
@@ -256,7 +256,7 @@ public:
 
     for (int d = 0; d < DIAS_SEMANA; d++) {
       for (int hora = 0; hora < HORAS_DIA; hora++) {
-        float precio = mercado->precioPorHora(hora);
+        float precio = mercado->precio(0, hora);
 
         if (precio > PRECIO_ESCASEZ && nivelEmbalses < EMBALSE_MINIMO) {
           cout << NOMBRES_DIAS[d] << " Hora " << hora << " | precio " << precio << " ALERTA RIESGO DE RACIONAMIENTO!" << endl;

@@ -37,5 +37,6 @@ const int HORA_INICIAL = 10;
 const float PRECIO_INICIAL = 450;
 const float EMBALSE_INICIAL = 70;
 const string NOMBRES_DIAS[DIAS_SEMANA] = {"Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"};
+const int LETRAS_MINIMAS = 3;
 
 #endif

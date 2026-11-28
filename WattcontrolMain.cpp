@@ -1,7 +1,11 @@
 #include "Negocio.h"
 #include "Constantes.h"
+#include "ValidacionDeTexto.h"
+
 int main() {
   srand(SEMILLA);
+  string nombreNegocio = pedirTexto("Nombre del negocio: ");
+  string nombreResponsable = pedirTexto("Nombre del responsable: ");
   int hora = HORA_INICIAL;
   int opcionElegida;
   float precio = PRECIO_INICIAL;
@@ -18,6 +22,7 @@ int main() {
 
   do {
     cout << endl << "===== WattControl =====" << endl;
+    cout << "Negocio: " << nombreNegocio << " | Responsable: " << nombreResponsable << endl;
     cout << "1. Ingresar lectura manual (hora, precio, nivelEmbalse)" << endl;
     cout << "2. Evaluar decision de cada carga" << endl;
     cout << "3. Simular un dia completo (24 h)" << endl;
