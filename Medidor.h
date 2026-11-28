@@ -1,6 +1,8 @@
 #ifndef MEDIDOR_H
 #define MEDIDOR_H
 
+#include "FuncionesPropias.h"
+
 // Clase Medidor que acumula el consumo de energia y su costo total
 class Medidor {
 private:
@@ -11,7 +13,7 @@ public:
   Medidor() : consumototalkwh(0), costototalcop(0) {}
   void registrarconsumo(float kw, float precio) {
     consumototalkwh += kw;
-    costototalcop += (kw * precio);
+    costototalcop += costo(kw, precio);
   }
   float getconsumototalkwh() const { return consumototalkwh; }
   float getcostototalcop() const { return costototalcop; }
