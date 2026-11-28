@@ -366,6 +366,16 @@ public:
 
   void resumen() {
 
+
+    if (!tieneDatosSemanales) {
+      for (int i = 0; i < contadorCargas; i++) {
+        cout << setw(20) << left << cargas[i]->getnombre() << right << cargas[i]->getHorasUso() << " horas, "
+             << cargas[i]->getHorasUso() * cargas[i]->getpotenciakw() << " kWh" << endl;
+      }
+    }
+
+    cout << fixed << setprecision(0);
+
     for (int i = 0; i < contadorCargas; i++) {
       cout << setw(20) << left << cargas[i]->getnombre() << right << cargas[i]->getHorasUso() << " horas, "
            << cargas[i]->getHorasUso() * cargas[i]->getpotenciakw() << " kWh" << endl;

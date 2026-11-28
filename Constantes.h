@@ -19,6 +19,7 @@ const float POTENCIA_CONTRATADA = 9.0; // KW maximos para la panaderia
 const float PRECIO_MAXIMO = 800;
 const float PRECIO_ESCASEZ = 1500.0;   // PRECIO MAXIMO POR KW
 const float EMBALSE_MINIMO = 40;       // CAPACIDAD MINIMA DE EMBALSE
+const float EMBALSE_MAXIMO = 100;
 
 // POTENCIA DE CADA CARGA EN EL NEGOCIO
 const float POTENCIA_NEVERA = 1.2;

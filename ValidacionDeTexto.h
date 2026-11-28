@@ -39,4 +39,41 @@ inline string pedirTexto(string pregunta) {
   return texto;
 }
 
+// Se extraen estas funciones del case 1 del main para limpiar la lógica del menú
+inline int pedirHora() {
+  int hora;
+  do {
+    cout << "Hora: ";
+    cin >> hora;
+    if (hora < 0 || hora >= HORAS_DIA) {
+      cout << " Hora invalida, intenta nuevamente (Entero entre 0 y 23)" << endl;
+    }
+  } while (hora < 0 || hora >= HORAS_DIA);
+  return hora;
+}
+
+inline float pedirPrecio() {
+  float precio;
+  do {
+    cout << "Precio en bolsa: ";
+    cin >> precio;
+    if (precio <= 0) {
+      cout << " Error, valor invalido, el precio debe ser mayor a 0" << endl;
+    }
+  } while (precio <= 0);
+  return precio;
+}
+
+inline float pedirNivelEmbalse() {
+  float nivel;
+  do {
+    cout << "Cual es el nivel de los Embalses: ";
+    cin >> nivel;
+    if (nivel < 0 || nivel > EMBALSE_MAXIMO) {
+      cout << " Los valores de los embalses deben estar entre 0 y 100" << endl;
+    }
+  } while (nivel < 0 || nivel > EMBALSE_MAXIMO);
+  return nivel;
+}
+
 #endif

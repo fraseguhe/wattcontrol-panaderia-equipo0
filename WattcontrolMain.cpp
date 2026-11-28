@@ -2,6 +2,19 @@
 #include "Constantes.h"
 #include "ValidacionDeTexto.h"
 
+// Se extrae el menú de main() para que quede limpio, solo crea objetos y llama métodos
+void mostrarMenu(string nombreNegocio, string nombreResponsable) {
+  cout << endl << "===== WattControl =====" << endl;
+  cout << "Negocio: " << nombreNegocio << " | Responsable: " << nombreResponsable << endl;
+  cout << "1. Ingresar lectura manual (hora, precio, nivelEmbalse)" << endl;
+  cout << "2. Evaluar decision de cada carga" << endl;
+  cout << "3. Simular un dia completo (24 h)" << endl;
+  cout << "4. Resumen de la ultima simulacion" << endl;
+  cout << "5. Simular la semana real" << endl;
+  cout << "0. Salir del programa" << endl;
+  cout << "Elige una opcion: ";
+}
+
 int main() {
   srand(SEMILLA);
   string nombreNegocio = pedirTexto("Nombre del negocio: ");
@@ -21,52 +34,20 @@ int main() {
   panaderia.nuevaCarga(&amasadora);
 
   do {
-    cout << endl << "===== WattControl =====" << endl;
-    cout << "Negocio: " << nombreNegocio << " | Responsable: " << nombreResponsable << endl;
-    cout << "1. Ingresar lectura manual (hora, precio, nivelEmbalse)" << endl;
-    cout << "2. Evaluar decision de cada carga" << endl;
-    cout << "3. Simular un dia completo (24 h)" << endl;
-    cout << "4. Resumen de la ultima simulacion" << endl;
-    cout << "5. Simular la semana real" << endl;
-    cout << "0. Salir del programa" << endl;
-    cout << "Elige una opcion: ";
+    mostrarMenu(nombreNegocio, nombreResponsable);
     cin >> opcionElegida;
 
     switch (opcionElegida) {
     case 1:
-      do {
-        cout << "Hora: ";
-        cin >> hora;
-        if (hora < 0 || hora > 23) {
-          cout << " Hora invalidad, intenta nuevamente (Entero entre 0 y 23)" << endl;
-        }
-      } while (hora < 0 || hora > 23);
-
-      do {
-        cout << "Precio en bolsa: ";
-        cin >> precio;
-
-        if (precio <= 0) {
-          cout << " Error, valor invalido, el precio debe ser mayor a 0" << endl;
-        }
-      } while (precio <= 0);
-
-      do {
-        cout << "Cual es el nivel de los Embalses: ";
-        cin >> nivelEmbalse;
-
-        if (nivelEmbalse < 0 || nivelEmbalse > 100) {
-          cout << " Los valores de los embalses deben estar entre 0 y 100" << endl;
-        }
-      } while (nivelEmbalse < 0 || nivelEmbalse > 100);
-
+      hora = pedirHora();
+      precio = pedirPrecio();
+      nivelEmbalse = pedirNivelEmbalse();
       mercado.setNivelEmbalses(nivelEmbalse);
-
-      cout << "Ingreso de datos exitoso!" << endl;
+      cout << "Todos los datos están correctos!" << endl;
       break;
 
     case 2:
-      cout << "Desicion con los datos iniciales" << endl;
+      cout << "Decision con los valores iniciales" << endl;
       panaderia.evaluarDecision(hora, precio, nivelEmbalse);
       break;
 
@@ -80,13 +61,13 @@ int main() {
         panaderia.resumen();
       }
       else {
-        cout << "Inicialice una simulacion con la opcion 3 antes de usar esta opcion." << endl;
+        cout << "Empieza una simulacion con la opcion 3 o la 5 antes de usar esta opción." << endl;
       }
       break;
-    
+
     case 5:
       panaderia.simularSemana();
-      estadoSimulacion = true;      
+      estadoSimulacion = true;
       break;
 
     case 0:
@@ -97,4 +78,6 @@ int main() {
       cout << "Opcion elegida no valida, intenta nuevamente" << endl;
     }
   } while (opcionElegida != 0);
-};
+
+  return 0;
+}
